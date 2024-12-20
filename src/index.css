@@ -74,6 +74,13 @@
   }
 }
 
+
+/* #root {
+  display: flex;
+  height: 100%;
+  background-color: var(--background);
+} */
+
 /* 
 
 .draggable{

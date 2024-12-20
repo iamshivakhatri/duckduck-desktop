@@ -35,7 +35,7 @@ function createWindow() {
     minHeight: 600,
     minWidth:300,
     frame: false,
-    backgroundColor: '00FFFFFF',
+    backgroundColor: '#00FFFFFF',
     hasShadow: false,
     transparent: true,
     alwaysOnTop: true,
@@ -107,9 +107,12 @@ function createWindow() {
 
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)
+    studio.loadURL(import.meta.env.VITE_APP_URL)
   } else {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(RENDERER_DIST, 'index.html'))
+    studio.loadFile(path.join(RENDERER_DIST, 'studio.html'));
+
   }
 }
 
