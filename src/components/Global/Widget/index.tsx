@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react'
 import Loader from '../Loader'
 import { fetchUserProfile } from '@/lib/utils'
 import { useMediaSources } from '@/hooks/useMediaSources'
+import MediaConfiguration from '../MediaConfiguration'
 
 
 interface Subscription {
@@ -59,7 +60,10 @@ const Widget = () => {
         </ClerkLoading>
         <SignedIn>
             {profile? (
-                <MediaConfiguration/>
+                <MediaConfiguration
+                state={state}
+                user={profile.user}
+                />
             ):(
                 <div className="w-full h-full flex justify-center items-center">
                     <Loader state={false} color="#fff"/>
