@@ -58,9 +58,19 @@ export const useStudioSettings = (
             audio: values.audio!,
             preset: values.preset!,
         })
+        window.ipcRenderer.send('media-sources', {
+            screen:values.screen,
+            id: id,
+            audio: values.audio,
+            preset: values.preset,
+            plan,
+          })
       })
+     
+      return ()=> subscribe.unsubscribe()
+
     }, [watch])
 
-    return {}
+    return {register, isPending, onPreset}
 }
 
