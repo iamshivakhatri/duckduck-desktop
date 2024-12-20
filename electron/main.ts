@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, desktopCapturer, ipcMain } from 'electron'
 // import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
@@ -107,11 +107,13 @@ function createWindow() {
 
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)
-    studio.loadURL(import.meta.env.VITE_APP_URL)
+    studio.loadURL(`${import.meta.env.VITE_APP_URL}/studio.html`)
+    floatingWwebCam.loadURL(`${import.meta.env.VITE_APP_URL}/webcam.html`)
   } else {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(RENDERER_DIST, 'index.html'))
     studio.loadFile(path.join(RENDERER_DIST, 'studio.html'));
+    studio.loadFile(path.join(RENDERER_DIST, 'webcam.html'));
 
   }
 }
@@ -123,8 +125,56 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
     win = null
+    studio = null
+    floatingWwebCam = null
   }
 })
+
+ipcMain.on('closeApp', () => {
+  if(process.platform !== 'darwin'){
+    app.quit()
+    win = null
+    studio = null
+    floatingWwebCam = null
+  }
+  
+})
+
+ipcMain.handle('getSources', async () => {  
+  const data = await  desktopCapturer.getSources({
+    thumbnailSize:{height: 100, width: 100},
+    fetchWindowIcons: true,
+    types: ['window', 'screen']
+  })
+  console.log('DISPLAYS ',data)
+  return data 
+})
+
+ipcMain.on('media-sources', (event, payload) => {
+  console.log(event)
+  studio?.webContents.send('profile-recieved', payload)
+})
+
+ipcMain.on('resize-studio', (event, payload) => {
+  console.log(event)
+  if(payload.shrink){
+    studio?.setSize(400, 100)
+  }
+
+  if(!payload.shrink){
+    studio?.setSize(400, 250)
+  }
+
+})
+
+
+ipcMain.on('hide-plugin', (event, payload) => {
+  console.log(event)
+  win?.webContents.send('hide-plugin', payload)
+})
+
+
+
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the

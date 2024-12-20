@@ -7,7 +7,7 @@ function App() {
         <Button>
             Hello
         </Button>
-        <h1>Studio Component </h1>
+        <h1>WEBCAM app</h1>
     </div>
   )
 }
