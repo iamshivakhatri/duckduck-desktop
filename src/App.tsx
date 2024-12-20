@@ -4,8 +4,8 @@ import './App.css'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import ControlLayer from './layouts/ControlLayout'
-import AuthButton from './components/Global/AuthButton/index'
-import Widget from './components/Global/Widget/index'
+import AuthButton from './components/Global/AuthButton'
+import Widget from './components/Global/Widget'
 
 function App() {
 
@@ -13,10 +13,10 @@ function App() {
 
   return (
     <QueryClientProvider client={client}>
-    <ControlLayer>
+     <ControlLayer>
       <AuthButton/>
       <Widget/>
-    </ControlLayer >
+    </ControlLayer > 
       <Toaster />
     </QueryClientProvider>
 

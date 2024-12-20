@@ -14,10 +14,20 @@ const httpsClient = axios.create({
 export const onCloseApp =()=> window.ipcRenderer.send('closeApp')
 
 export const fetchUserProfile = async(clerkId: string) => {
+  console.log("fetching user profile with clerkid ", clerkId)
   const response =  await httpsClient.get(`/auth/${clerkId}`,{
     headers:{
       'Content-Type': 'application/json',
     }
   })
   return response.data
+}
+
+export const getMediaSources = async()=>{
+  const displays = await window.ipcRenderer.invoke('getSources')
+  const enumerateDevices = await window.navigator.mediaDevices.enumerateDevices()
+  const audioInputs = enumerateDevices.filter(device => device.kind === 'audioinput')
+
+  console.log('getting sources')
+  return {displays, audioInputs}
 }
