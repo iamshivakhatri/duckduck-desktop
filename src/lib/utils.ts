@@ -31,3 +31,24 @@ export const getMediaSources = async()=>{
   console.log('getting sources')
   return {displays, audioInputs}
 }
+
+export const updateStudioSetting = async (
+  id: string,
+  screen?: string | null,
+  audio?: string | null,
+  preset?: 'HD' | 'SD',
+)=>{
+  const response = await httpsClient.post(
+    `/studio/${id}`,
+    {
+      screen,
+      audio,
+      preset
+    },
+    {headers: {
+      'Content-Type': 'aplication/json'
+    },
+  }
+ )
+ return response.data
+}
